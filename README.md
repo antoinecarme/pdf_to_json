@@ -8,4 +8,4 @@ The extracted information can be :
 * Page images
 * Page texts (in Unicode) and attirbutes (fonts etc)
 
-This tool uses the excellent [poppler](https://poppler.freedesktop.org/)  library. It is initially intended for multilingual PDF document processing.
+This tool uses the excellent [poppler](https://poppler.freedesktop.org/) library. It is initially intended for multilingual PDF document processing.
