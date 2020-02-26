@@ -9,7 +9,11 @@ The extracted information can be :
 * Page images
 * Page texts (in Unicode, when availabe, no OCR here) and text attributes (fonts etc)
 
-This tool uses the excellent [poppler](https://poppler.freedesktop.org/) library. It is initially intended for multilingual PDF document processing.
+This tool uses the excellent [poppler](https://poppler.freedesktop.org/) library. 
+
+This tool is initially intended for multilingual PDF document processing. The following tests describve the use case :
+
+https://github.com/antoinecarme/pdf_to_json_tests/tree/master/data/multilingual
 
 ## Demo
 
