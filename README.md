@@ -21,6 +21,7 @@ https://github.com/antoinecarme/pdf_to_json_tests/tree/master/data/multilingual
 
 ```Python
 import pdf_to_json as p2j
+import json
 
 # web document : UDHR
 url = "https://www.ohchr.org/EN/UDHR/Documents/UDHR_Translations/eng.pdf"
@@ -29,7 +30,7 @@ url = "https://www.ohchr.org/EN/UDHR/Documents/UDHR_Translations/eng.pdf"
 lConverter = p2j.pdf_to_json.pdf_to_json_converter()
 lDict = lConverter.convert(url)
 
-print(lDict)
+print(json.dumps(lDict, indent=4))
 
 ```
 
