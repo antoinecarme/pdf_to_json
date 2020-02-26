@@ -7,7 +7,7 @@ The goal is to be able to quickly extract all the available information in the d
 The extracted information can be :
 * Document metadata : title, format, versino, creation date, author
 * Page images
-* Page texts (in Unicode) and attirbutes (fonts etc)
+* Page texts (in Unicode) and text attributes (fonts etc)
 
 This tool uses the excellent [poppler](https://poppler.freedesktop.org/) library. It is initially intended for multilingual PDF document processing.
 
