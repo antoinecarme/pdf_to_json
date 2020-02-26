@@ -13,6 +13,7 @@ from gi.repository import Gio, GLib, Poppler
 class pdf_to_json_converter:
 
     def __init__(self):
+        self.mImageHashOnly = False
         pass
 
     def convert(self, uri):
@@ -65,7 +66,13 @@ class pdf_to_json_converter:
         lDict["Pages"] = lPages
         return lDict
 
-        
+    def hash_string(self, x):
+        import hashlib
+        md5_1 = hashlib.md5()
+        md5_1.update(x)
+        lHash = md5_1.hexdigest()
+        return lHash
+
                       
     def render_page(self, iPage):
         import cairo
@@ -89,6 +96,9 @@ class pdf_to_json_converter:
         encoded = base64.b64encode(buff.getvalue()).decode("utf-8")
         encoded = '<img src=\"data:image/png;base64,' + encoded
         encoded = encoded + '\" width=500 border=\"0\" align=\"center\"> </img>'
-        return encoded
+        lOutput = encoded
+        if(self.mImageHashOnly):
+            lOutput = self.hash_string(encoded.encode())
+        return lOutput
                       
 
