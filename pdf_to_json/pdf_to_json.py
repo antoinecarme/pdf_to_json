@@ -14,11 +14,13 @@ class pdf_to_json_converter:
 
     def __init__(self):
         self.mImageHashOnly = False
+        self.mDocument = None
         pass
 
     def convert(self, uri):
         lDocument = self.parse_doc(uri)
         lDict = self.get_doc_summary(lDocument)
+        self.mDocument = lDocument
         return lDict
     
     def parse_doc(self, uri):
@@ -62,10 +64,31 @@ class pdf_to_json_converter:
             lPage_Dict["Attributes"] = list(set(x))
             lPage_Dict["Text"] = page.get_text()
             lPage_Dict["Image"] = self.render_page(page)
+            lPage_Dict["Embedded_Images"] = self.extract_images(page)
             lPages[p] = lPage_Dict
         lDict["Pages"] = lPages
         return lDict
 
+    def surface_to_png_base_64(self, surface):
+        import io, base64
+        buff = io.BytesIO()
+        surface.write_to_png(buff)
+        base64_encoded = base64.b64encode(buff.getvalue()).decode("utf-8")
+        encoded = '<img src=\"data:image/png;base64,' + base64_encoded
+        encoded = encoded + '\" border=\"0\" align=\"center\"> </img>'
+        return encoded
+    
+    def extract_images(self , iPage):
+        images = []
+        surf = iPage.get_image(0)
+        i = 1
+        while(surf is not None):
+            encoded = self.surface_to_png_base_64(surf)
+            images.append(encoded)
+            surf = iPage.get_image(i)
+            i = i + 1
+        return images
+    
     def hash_string(self, x):
         import hashlib
         md5_1 = hashlib.md5()
@@ -90,12 +113,7 @@ class pdf_to_json_converter:
         iPage.render(cr)
         cr.show_page()
 
-        import io, base64
-        buff = io.BytesIO()
-        surface.write_to_png(buff)
-        encoded = base64.b64encode(buff.getvalue()).decode("utf-8")
-        encoded = '<img src=\"data:image/png;base64,' + encoded
-        encoded = encoded + '\" width=500 border=\"0\" align=\"center\"> </img>'
+        encoded = self.surface_to_png_base_64(surface)
         lOutput = encoded
         if(self.mImageHashOnly):
             lOutput = self.hash_string(encoded.encode())
