@@ -79,14 +79,14 @@ class pdf_to_json_converter:
         return encoded
     
     def extract_images(self , iPage):
-        images = []
-        surf = iPage.get_image(0)
-        i = 1
-        while(surf is not None):
-            encoded = self.surface_to_png_base_64(surf)
-            images.append(encoded)
-            surf = iPage.get_image(i)
-            i = i + 1
+        images = {}
+        lMapping = iPage.get_image_mapping()
+        for lMap in lMapping:
+            area = (lMap.area.x1, lMap.area.y1, lMap.area.x2, lMap.area.y2)
+            surf = iPage.get_image(lMap.image_id)
+            lImage = self.surface_to_png_base_64(surf)
+            lDict = {"area" : area , "image" : lImage}
+            images[lMap.image_id] = lDict
         return images
     
     def hash_string(self, x):
