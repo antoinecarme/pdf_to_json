@@ -33,6 +33,13 @@ class pdf_to_json_converter:
         document = Poppler.Document.new_from_stream(input_stream, -1, None, None)
         return document
 
+
+    def time_to_iso_format(self, iSecondSinceEpoch):
+        if(iSecondSinceEpoch < 0):
+            return None
+        import datetime as DT
+        return DT.datetime.utcfromtimestamp(iSecondSinceEpoch).isoformat()
+    
     def get_doc_summary(self, iDoc):
         lDict = {}
 
@@ -41,8 +48,8 @@ class pdf_to_json_converter:
         # lDict["ID"] = iDoc.get_id()
         lDict_M["Author"] = iDoc.get_author()
         lDict_M["Creator"] = iDoc.get_creator()
-        lDict_M["Creation_Date"] = iDoc.get_creation_date()
-        lDict_M["Modification_Date"] = iDoc.get_modification_date()
+        lDict_M["Creation_Date"] = self.time_to_iso_format(iDoc.get_creation_date())
+        lDict_M["Modification_Date"] = self.time_to_iso_format(iDoc.get_modification_date())
         lDict_M["PDF_Version"] = (iDoc.get_pdf_version_string(), iDoc.get_pdf_subtype_string())
         lDict["MetaData"] = lDict_M
         
